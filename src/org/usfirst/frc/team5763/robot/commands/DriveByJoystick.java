@@ -4,6 +4,11 @@ import org.usfirst.frc.team5763.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+/**
+ * @author Rohit
+ *Drives the drivetrain using the drivetrain's driveJoystick method.
+ *
+ */
 public class DriveByJoystick extends Command{
 	Drivetrain drivetrain;
 	public DriveByJoystick(){

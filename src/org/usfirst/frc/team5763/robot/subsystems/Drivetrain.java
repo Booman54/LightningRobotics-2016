@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  * @author Rohit
- *	The drivetrain class.  This directly handles low-level robot movement, including velocity tracking and 
+ *The drivetrain class.  This directly handles low-level robot movement, including drive-by-velocity and joystick math.
  */
 public class Drivetrain extends Subsystem{
 	static Drivetrain instance;
@@ -48,6 +48,9 @@ public class Drivetrain extends Subsystem{
 		}
 		return instance;
 	}
+	/**
+	 * Drives the robot using the current joystick status. 
+	 */
 	public void driveJoystick(){
 		double y=Robot.oi.controlStick.getY();
 		double x=Robot.oi.controlStick.getCombinedSteer();
@@ -77,7 +80,7 @@ public class Drivetrain extends Subsystem{
 		rightControl.set(rightVelocity);
 	}
 	/**
-	 * Reboots the motor controllers and stops the robot's movement.
+	 * Stops the robot's movement, overriding any previous movements.
 	 */
 	public void halt(){
 		rightControl.halt();
@@ -90,14 +93,14 @@ public class Drivetrain extends Subsystem{
 	@Override
 	protected void initDefaultCommand() {}	
 	/**
-	 * Gets the registered maximum velocity of the robot.
+	 * Gets the maximum velocity of the robot.
 	 * @return the maximum velocity of the robot
 	 */
 	public static double getMaxVel() {
 		return maxV;
 	}
 	/**
-	 * Gets the registered maximum acceleration of the robot.
+	 * Gets the maximum acceleration of the robot.
 	 * @return the maximum acceleration of the robot
 	 */
 	public static double getMaxAccel() {

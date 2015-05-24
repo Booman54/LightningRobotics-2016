@@ -19,6 +19,7 @@ public class RobotMap {
 
     // Hardware constants (using US Customary)
     public static final double wheelRadius=2; //The radius of the wheel.  The units/second is the reported velocity.
+    public static final double wheelToWheelDistance=30; //The wheel-to-wheel distance.
     public static final int encoderTicksPerRevolution=1000; //The number of ticks the encoder will read in a full revolution.
     public static final int schedulerTicksPerSecond=50; //The number of times a command executes per second.
 }

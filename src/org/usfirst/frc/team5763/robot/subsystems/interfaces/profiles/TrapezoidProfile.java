@@ -4,9 +4,8 @@ import org.usfirst.frc.team5763.robot.subsystems.Drivetrain;
 
 /**
  * @author Rohit
- *
- * A class that will generate and represent a trapezoidal motion profile.
- * If the desired distance is too short for the robot to reach its maximum speed, a triangular profile will be used instead.
+ *A class that will generate and represent a trapezoidal motion profile.
+ *If the desired distance is too short for the robot to reach its maximum speed, a triangular profile will be used instead.
  */
 public class TrapezoidProfile implements MotionProfile{
 	double a,b,c,slope;
@@ -14,6 +13,7 @@ public class TrapezoidProfile implements MotionProfile{
 	double maxA;
 	double distance;
 	boolean trapezoid;
+	int i=1; //This is used to invert the profile
 	/**
 	 * Generates a TMP using the default maximum velocity and acceleration.
 	 * @param distance	the distance to drive
@@ -54,25 +54,30 @@ public class TrapezoidProfile implements MotionProfile{
 	 * @return the velocity associated with that time
 	 */
 	public double getTargetVelocity(double t){
+		double val;
 		if(trapezoid){
 			if(t<a){
-				return t*maxA;
+				val=t*maxA;
 			}else if(t>b){
-				return maxV-maxA*(t-b);
+				val=maxV-maxA*(t-b);
 			}else if(t>c){
-				return 0;
+				val=0;
 			}else{
-				return maxV;
+				val=maxV;
 			}
 		}else{
 			if(t<a){
-				return t*maxA;
+				val=t*maxA;
 			}else if(t>a && t<b){
-				return maxV-t*maxA;
+				val=maxV-t*maxA;
 			}else{
-				return 0;
+				val=0;
 			}
 		}
+		return val*i;
+	}
+	public void invertProfile(){
+		i*=-1;
 	}
 	
 }

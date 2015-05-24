@@ -1,5 +1,9 @@
 package org.usfirst.frc.team5763.robot.subsystems.interfaces.profiles;
 
+/**
+ * @author Rohit
+ *A base class to allow two motors to be synchronized in time. 
+ */
 public class DualMotorProfile {
 	MotionProfile leftProfile;
 	MotionProfile rightProfile;

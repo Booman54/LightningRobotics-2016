@@ -3,23 +3,22 @@ package org.usfirst.frc.team5763.robot.commands;
 
 
 import org.usfirst.frc.team5763.robot.subsystems.Drivetrain;
-import org.usfirst.frc.team5763.robot.subsystems.interfaces.profiles.StraightProfile;
-
+import org.usfirst.frc.team5763.robot.subsystems.interfaces.profiles.RotateProfile;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class DriveToDistance extends Command{
-	StraightProfile profile;
+public class Rotate extends Command{
+	RotateProfile profile;
 	Drivetrain drivetrain;
 	Timer timer;
 	
 	/**
-	 *Creates a command to drive the robot straight for a certain distance, using a StraightProfile.
-	 * @param distance	the distance to drive
+	 *Creates a command to rotate the robot to a certain angle, using a RotateProfile.
+	 * @param angle	the angle (in degrees) to turn
 	 */
-	public DriveToDistance(double distance){
+	public Rotate(double angle){
 		this.drivetrain=Drivetrain.getInstance();
-		this.profile=new StraightProfile(distance);
+		this.profile=new RotateProfile(angle);
 	}
 	@Override
 	protected void initialize() {

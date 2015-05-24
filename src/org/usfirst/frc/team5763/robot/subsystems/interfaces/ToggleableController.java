@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.PIDController;
 
 /**
  * @author Rohit
- * A class to allow PID Controllers to be switched on/off, transparently allowing control based on speed. Incomplete.
+ * A class to allow PID Controllers to be switched on/off, transparently allowing control based on speed. Incomplete and worthless.
  */
 public class ToggleableController{
 	boolean pidMode;

@@ -2,6 +2,10 @@ package org.usfirst.frc.team5763.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 
+/**
+ * @author Rohit
+ *A joystick that actually isn't brain-dead and won't throw you under the bus with weird outputs.
+ */
 public class LightningJoystick {
 	private Joystick joystick;
 	public LightningJoystick(int port){
