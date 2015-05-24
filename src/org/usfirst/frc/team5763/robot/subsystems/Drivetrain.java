@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5763.robot.subsystems;
 
 import org.usfirst.frc.team5763.robot.RobotMap;
+import org.usfirst.frc.team5763.robot.subsystems.interfaces.VelocityController;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
@@ -21,7 +22,7 @@ public class Drivetrain extends Subsystem{
 	private double kP=1;
 	private double kI=0;
 	private double kD=.5;
-	private double kF=1;
+	private double kF=1/maxV;
 	
 	private double rightMotorBias=1;
 	
@@ -29,22 +30,18 @@ public class Drivetrain extends Subsystem{
 	Encoder rightEncoder;
 	Talon leftMotor;
 	Talon rightMotor;
-	PIDController leftControl;
-	PIDController rightControl;
+	VelocityController leftControl;
+	VelocityController rightControl;
 	
 	private Drivetrain(){
 		leftMotor=new Talon(RobotMap.leftMotor);
 		rightMotor=new Talon(RobotMap.rightMotor);
 		leftEncoder=new Encoder(RobotMap.leftMotorEncoderA,RobotMap.leftMotorEncoderB);
 		rightEncoder=new Encoder(RobotMap.rightMotorEncoderA,RobotMap.rightMotorEncoderB);
-		leftControl=new PIDController(kP, kI, kD, kF, leftEncoder, leftMotor);
-		rightControl=new PIDController(rightMotorBias*kP, rightMotorBias*kI, rightMotorBias*kD, kF, rightEncoder, rightMotor);
 		leftEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
 		rightEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
-		leftControl.setOutputRange(-1, 1);
-		rightControl.setOutputRange(-1, 1);
-		leftControl.setInputRange(-maxV, maxV);
-		rightControl.setInputRange(-maxV, maxV);
+		leftControl=new VelocityController(leftEncoder,leftMotor);
+		rightControl=new VelocityController(rightEncoder,rightMotor);
 	}
 	/**
 	 * Gets the current instance of the Drivetrain.  If there is none, creates one.
@@ -56,6 +53,11 @@ public class Drivetrain extends Subsystem{
 		}
 		return instance;
 	}
+	public driveJoystick(){
+		
+	}
+	
+	
 	
 	/**
 	 * Sets the raw velocities of each side.
@@ -63,34 +65,20 @@ public class Drivetrain extends Subsystem{
 	 * @param rightVelocity	the desired velocity for the right motor
 	 */
 	public void setVelocity(double leftVelocity, double rightVelocity){
-		leftControl.setSetpoint(leftVelocity);
-		rightControl.setSetpoint(rightVelocity);
+		leftControl.set(leftVelocity);
+		rightControl.set(rightVelocity);
 	}
 	/**
 	 * Reboots the motor controllers and stops the robot's movement.
 	 */
 	public void halt(){
-		leftControl.reset();
-		rightControl.reset();
-		leftControl.setSetpoint(0);
-		rightControl.setSetpoint(0);
-		setDirect(0,0);
-		leftControl.enable();
-		rightControl.enable();
+		rightControl.halt();
+		leftControl.halt();
 	}
-	
-	
-	
 	private synchronized void setDirect(int leftPower, int rightPower){
 		leftMotor.set(leftPower);
 		rightMotor.set(rightPower);
 	}
-	
-	
-	
-	
-	
-	
 	@Override
 	protected void initDefaultCommand() {}	
 	/**
