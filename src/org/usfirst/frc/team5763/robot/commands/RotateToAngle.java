@@ -7,7 +7,7 @@ import org.usfirst.frc.team5763.robot.subsystems.interfaces.profiles.RotateProfi
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class Rotate extends Command{
+public class RotateToAngle extends Command{
 	RotateProfile profile;
 	Drivetrain drivetrain;
 	Timer timer;
@@ -16,7 +16,7 @@ public class Rotate extends Command{
 	 *Creates a command to rotate the robot to a certain angle, using a RotateProfile.
 	 * @param angle	the angle (in degrees) to turn
 	 */
-	public Rotate(double angle){
+	public RotateToAngle(double angle){
 		this.drivetrain=Drivetrain.getInstance();
 		this.profile=new RotateProfile(angle);
 	}

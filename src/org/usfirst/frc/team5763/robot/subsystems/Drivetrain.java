@@ -106,4 +106,7 @@ public class Drivetrain extends Subsystem{
 	public static double getMaxAccel() {
 		return maxA;
 	}
+	public double getUtilization(){
+		return (Math.abs(leftMotor.get())+Math.abs(rightMotor.get()))/2;
+	}
 }
