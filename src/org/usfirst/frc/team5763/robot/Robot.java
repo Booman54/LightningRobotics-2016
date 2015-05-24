@@ -5,6 +5,7 @@ import org.usfirst.frc.team5763.robot.commands.DriveByJoystick;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 public class Robot extends IterativeRobot{
 	public static OI oi;
@@ -30,5 +31,8 @@ public class Robot extends IterativeRobot{
 	}
 	public void disabledInit(){
         Scheduler.getInstance().removeAll();
+    }
+    public void testPeriodic() {
+        LiveWindow.run();
     }
 }
