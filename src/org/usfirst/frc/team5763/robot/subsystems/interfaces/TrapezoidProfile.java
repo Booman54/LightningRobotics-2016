@@ -8,7 +8,7 @@ import org.usfirst.frc.team5763.robot.subsystems.Drivetrain;
  * A class that will generate and represent a trapezoidal motion profile.
  * If the desired distance is too short for the robot to reach its maximum speed, a triangular profile will be used instead.
  */
-public class TrapezoidProfile {
+public class TrapezoidProfile implements MotionProfile{
 	double a,b,c,slope;
 	double maxV;
 	double maxA;

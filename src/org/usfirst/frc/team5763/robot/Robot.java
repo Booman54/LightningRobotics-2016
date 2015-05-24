@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
 public class Robot extends IterativeRobot{
-	OI oi;
+	public static OI oi;
 	public void robotInit(){
 		oi=new OI();
 	}

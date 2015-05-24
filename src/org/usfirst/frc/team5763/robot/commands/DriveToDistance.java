@@ -3,14 +3,13 @@ package org.usfirst.frc.team5763.robot.commands;
 
 
 import org.usfirst.frc.team5763.robot.subsystems.Drivetrain;
-import org.usfirst.frc.team5763.robot.subsystems.interfaces.TrapezoidProfile;
-
+import org.usfirst.frc.team5763.robot.subsystems.interfaces.StraightProfile;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveToDistance extends Command{
 	double distance;
-	TrapezoidProfile profile;
+	StraightProfile profile;
 	Drivetrain drivetrain;
 	Timer timer;
 	
@@ -21,7 +20,7 @@ public class DriveToDistance extends Command{
 	public DriveToDistance(double distance){
 		this.distance=distance;
 		this.drivetrain=drivetrain.getInstance();
-		this.profile=new TrapezoidProfile(distance);
+		this.profile=new StraightProfile(distance);
 	}
 	@Override
 	protected void initialize() {
@@ -31,13 +30,12 @@ public class DriveToDistance extends Command{
 
 	@Override
 	protected void execute() {
-		double vel=profile.getTargetVelocity(timer.get());
-		drivetrain.setVelocity(vel, vel);
+		drivetrain.setVelocity(profile.getLeftTarget(timer.get()), profile.getRightTarget(timer.get()));
 	}
 
 	@Override
 	protected boolean isFinished() {
-		return profile.getTargetVelocity(timer.get())==0 ? true : false; 
+		return profile.isDone(timer.get()) ? true : false; 
 	}
 	@Override
 	protected void end() {

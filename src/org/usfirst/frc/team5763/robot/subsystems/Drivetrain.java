@@ -1,5 +1,6 @@
 package org.usfirst.frc.team5763.robot.subsystems;
 
+import org.usfirst.frc.team5763.robot.Robot;
 import org.usfirst.frc.team5763.robot.RobotMap;
 import org.usfirst.frc.team5763.robot.subsystems.interfaces.VelocityController;
 
@@ -19,12 +20,6 @@ public class Drivetrain extends Subsystem{
 	private static double maxV=1;
 	private static double maxA=1;
 
-	private double kP=1;
-	private double kI=0;
-	private double kD=.5;
-	private double kF=1/maxV;
-	
-	private double rightMotorBias=1;
 	
 	Encoder leftEncoder;
 	Encoder rightEncoder;
@@ -53,12 +48,10 @@ public class Drivetrain extends Subsystem{
 		}
 		return instance;
 	}
-	public driveJoystick(){
-		
+	public void driveJoystick(){
+		Robot.oi.controlStick.getX();
+		Robot.oi.controlStick.getY();
 	}
-	
-	
-	
 	/**
 	 * Sets the raw velocities of each side.
 	 * @param leftVelocity	the desired velocity for the left motor 
