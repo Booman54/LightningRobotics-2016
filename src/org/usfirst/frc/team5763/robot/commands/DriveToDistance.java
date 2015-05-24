@@ -3,7 +3,8 @@ package org.usfirst.frc.team5763.robot.commands;
 
 
 import org.usfirst.frc.team5763.robot.subsystems.Drivetrain;
-import org.usfirst.frc.team5763.robot.subsystems.interfaces.StraightProfile;
+import org.usfirst.frc.team5763.robot.subsystems.interfaces.profiles.StraightProfile;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -19,7 +20,7 @@ public class DriveToDistance extends Command{
 	 */
 	public DriveToDistance(double distance){
 		this.distance=distance;
-		this.drivetrain=drivetrain.getInstance();
+		this.drivetrain=Drivetrain.getInstance();
 		this.profile=new StraightProfile(distance);
 	}
 	@Override

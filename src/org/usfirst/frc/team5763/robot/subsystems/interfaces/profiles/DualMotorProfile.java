@@ -1,4 +1,4 @@
-package org.usfirst.frc.team5763.robot.subsystems.interfaces;
+package org.usfirst.frc.team5763.robot.subsystems.interfaces.profiles;
 
 public class DualMotorProfile {
 	MotionProfile leftProfile;

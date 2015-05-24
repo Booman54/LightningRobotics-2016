@@ -1,4 +1,4 @@
-package org.usfirst.frc.team5763.robot.subsystems.interfaces;
+package org.usfirst.frc.team5763.robot.subsystems.interfaces.profiles;
 
 public class StraightProfile extends DualMotorProfile{
 	public StraightProfile(double distance) {
