@@ -42,15 +42,30 @@ public class Drivetrain extends Subsystem{
 	 * Gets the current instance of the Drivetrain.  If there is none, creates one.
 	 * @return the current drivetrain object
 	 */
-	public Drivetrain getInstance(){
+	public static Drivetrain getInstance(){
 		if(instance==null){
 			instance=new Drivetrain();
 		}
 		return instance;
 	}
 	public void driveJoystick(){
-		Robot.oi.controlStick.getX();
-		Robot.oi.controlStick.getY();
+		double y=Robot.oi.controlStick.getY();
+		double x=Robot.oi.controlStick.getCombinedSteer();
+		double leftVel=y+x;
+		double rightVel=y-x;
+		if (leftVel>1){
+			leftVel=1;
+		}else if(leftVel<-1){
+			leftVel=-1;
+		}
+		if(rightVel>1){
+			rightVel=1;
+		}else if(rightVel<-1){
+			rightVel=-1;
+		}
+		leftVel*=maxV;
+		rightVel*=maxV;
+		setVelocity(leftVel, rightVel);
 	}
 	/**
 	 * Sets the raw velocities of each side.
