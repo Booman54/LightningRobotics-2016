@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource.PIDSourceParameter;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
  * @author Rohit
@@ -19,14 +20,15 @@ public class Drivetrain extends Subsystem{
 	
 	private static double maxV=1;
 	private static double maxA=1;
-
+	
+	private boolean diagnosticMode=false;
 	
 	Encoder leftEncoder;
 	Encoder rightEncoder;
 	Talon leftMotor;
 	Talon rightMotor;
-	VelocityController leftControl;
-	VelocityController rightControl;
+	VirtualWheel leftWheel;
+	VirtualWheel rightWheel;
 	
 	private Drivetrain(){
 		leftMotor=new Talon(RobotMap.leftMotor);
@@ -35,8 +37,8 @@ public class Drivetrain extends Subsystem{
 		rightEncoder=new Encoder(RobotMap.rightMotorEncoderA,RobotMap.rightMotorEncoderB);
 		leftEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
 		rightEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
-		leftControl=new VelocityController(leftEncoder,leftMotor);
-		rightControl=new VelocityController(rightEncoder,rightMotor);
+		leftWheel=new VirtualWheel(leftMotor,leftEncoder);
+		rightWheel=new VirtualWheel(rightMotor,rightEncoder);
 	}
 	/**
 	 * Gets the current instance of the Drivetrain.  If there is none, creates one.
@@ -76,19 +78,15 @@ public class Drivetrain extends Subsystem{
 	 * @param rightVelocity	the desired velocity for the right motor
 	 */
 	public void setVelocity(double leftVelocity, double rightVelocity){
-		leftControl.set(leftVelocity);
-		rightControl.set(rightVelocity);
+		leftWheel.setSetpoint(leftVelocity);
+		rightWheel.setSetpoint(rightVelocity);
 	}
 	/**
 	 * Stops the robot's movement, overriding any previous movements.
 	 */
 	public void halt(){
-		rightControl.halt();
-		leftControl.halt();
-	}
-	private synchronized void setDirect(int leftPower, int rightPower){
-		leftMotor.set(leftPower);
-		rightMotor.set(rightPower);
+		rightWheel.halt();
+		leftWheel.halt();
 	}
 	@Override
 	protected void initDefaultCommand() {}	
@@ -109,4 +107,12 @@ public class Drivetrain extends Subsystem{
 	public double getUtilization(){
 		return (Math.abs(leftMotor.get())+Math.abs(rightMotor.get()))/2;
 	}
+	public void initTestMode(){
+		if(!diagnosticMode){
+			//LiveWindow.addActuator("Drivetrain", "Right Wheel", rightWheel);
+			//LiveWindow.addActuator("Drivetrain", "Left Wheel", leftWheel);
+			diagnosticMode=true;
+		}
+	}
 }
+

@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj.SpeedController;
  * @author Rohit
  *A class that allows for controlling a motor based on a desired velocity, given an encoder and SpeedController.
  *The motor response is not instantaneous.
+ *
+ *This class is sort of worthless now.
  */
 public class VelocityController implements PIDOutput, PIDSource{
 	
@@ -34,6 +36,13 @@ public class VelocityController implements PIDOutput, PIDSource{
 		pid=new PIDController(kP,kI,kD,this,this);
 		pid.setOutputRange(-1, 1);
 		pid.setPercentTolerance(1);
+	}
+	/**
+	 * Gets the integrated PID Controller that the VelocityController is tapped into for tuning.
+	 * @return	the integrated PID Controller
+	 */
+	public PIDController getRootController(){
+		return pid;
 	}
 	/**
 	 * Changes the target speed for the controller to reach.

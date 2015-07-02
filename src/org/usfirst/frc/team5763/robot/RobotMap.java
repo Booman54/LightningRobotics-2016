@@ -17,9 +17,9 @@ public class RobotMap {
     // OI information
     public static final int controlStick = 0; //Joystick number
 
-    // Hardware constants (using US Customary)
-    public static final double wheelRadius=2; //The radius of the wheel.  The units/second is the reported velocity.
-    public static final double wheelToWheelDistance=30; //The wheel-to-wheel distance.
+    // Hardware constants (using SI/ISU)
+    public static final double wheelRadius=0.0508; //The radius of the wheel.  Meters is preferred here because metric is cooler.
+    public static final double wheelToWheelDistance=.50165; //The wheel-to-wheel distance.  This number is currently inexact.
     public static final int encoderTicksPerRevolution=1000; //The number of ticks the encoder will read in a full revolution.
     public static final int schedulerTicksPerSecond=50; //The number of times a command executes per second.
 }
