@@ -56,3 +56,6 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+#Local class settings
+.classpath
