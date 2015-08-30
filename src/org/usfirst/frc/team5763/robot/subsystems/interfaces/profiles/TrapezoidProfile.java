@@ -12,7 +12,7 @@ public class TrapezoidProfile implements MotionProfile{
 	double maxV;
 	double maxA;
 	double distance;
-	boolean trapezoid;
+	boolean trapezoid=true;
 	int i=1; //This is used to invert the profile
 	/**
 	 * Generates a TMP using the default maximum velocity and acceleration.
@@ -36,14 +36,18 @@ public class TrapezoidProfile implements MotionProfile{
 		generateConstants();
 	}
 	private void generateConstants(){
-		trapezoid=true;
+		if(distance<0){
+			distance*=-1;
+			invertProfile();
+		}
 		a=maxV/maxA;
 		b=distance/maxV;
 		if(b<a){
 			trapezoid=false;
 			a=Math.sqrt(distance/maxA);
 			b=2*a;
-			maxV=distance/maxA;
+			maxV=distance/a;
+			//System.out.println("a: "+a+" b:"+b+" maxV: "+maxV);
 		}else{
 			c=b+a;
 		}
@@ -69,7 +73,7 @@ public class TrapezoidProfile implements MotionProfile{
 			if(t<a){
 				val=t*maxA;
 			}else if(t>a && t<b){
-				val=maxV-t*maxA;
+				val=maxV-(t-a)*maxA;
 			}else{
 				val=0;
 			}
@@ -78,6 +82,14 @@ public class TrapezoidProfile implements MotionProfile{
 	}
 	public void invertProfile(){
 		i*=-1;
+	}
+	@Override
+	public boolean isDone(double t) {
+		if(trapezoid){
+			return t>=c;
+		}else{
+			return t>=b;
+		}
 	}
 	
 }

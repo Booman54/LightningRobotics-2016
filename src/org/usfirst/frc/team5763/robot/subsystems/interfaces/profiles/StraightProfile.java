@@ -7,6 +7,6 @@ public class StraightProfile extends DualMotorProfile{
 	 */
 	public StraightProfile(double distance) {
 		TrapezoidProfile prof=new TrapezoidProfile(distance);
-		buildProfile(prof, prof, 0);
+		buildProfile(prof, prof);
 	}
 }
