@@ -1,15 +1,12 @@
 package org.usfirst.frc.team5763.robot.subsystems;
 
+import org.usfirst.frc.team5763.robot.OI;
 import org.usfirst.frc.team5763.robot.Robot;
 import org.usfirst.frc.team5763.robot.RobotMap;
-import org.usfirst.frc.team5763.robot.subsystems.interfaces.VelocityController;
-
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDSource.PIDSourceParameter;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
  * @author Rohit
@@ -23,22 +20,22 @@ public class Drivetrain extends Subsystem{
 	
 	private boolean diagnosticMode=false;
 	
-	Encoder leftEncoder;
-	Encoder rightEncoder;
-	Talon leftMotor;
-	Talon rightMotor;
-	VirtualWheel leftWheel;
-	VirtualWheel rightWheel;
+	Encoder leftFrontEncoder;
+	Encoder rightFrontEncoder;
+	Talon leftFrontMotor;
+	Talon rightFrontMotor;
+	VirtualWheel leftFrontWheel;
+	VirtualWheel rightFrontWheel;
 	
 	private Drivetrain(){
-		leftMotor=new Talon(RobotMap.leftMotor);
-		rightMotor=new Talon(RobotMap.rightMotor);
-		leftEncoder=new Encoder(RobotMap.leftMotorEncoderA,RobotMap.leftMotorEncoderB);
-		rightEncoder=new Encoder(RobotMap.rightMotorEncoderA,RobotMap.rightMotorEncoderB);
-		leftEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
-		rightEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
-		leftWheel=new VirtualWheel(leftMotor,leftEncoder);
-		rightWheel=new VirtualWheel(rightMotor,rightEncoder);
+		leftFrontMotor=new Talon(RobotMap.leftFrontMotor);
+		rightFrontMotor=new Talon(RobotMap.rightFrontMotor);
+		leftFrontEncoder=new Encoder(RobotMap.leftMotorEncoderA,RobotMap.leftMotorEncoderB);
+		rightFrontEncoder=new Encoder(RobotMap.rightMotorEncoderA,RobotMap.rightMotorEncoderB);
+		leftFrontEncoder.setPIDSourceType(PIDSourceType.kRate);
+		rightFrontEncoder.setPIDSourceType(PIDSourceType.kRate);
+		leftFrontWheel=new VirtualWheel(leftFrontMotor,leftFrontEncoder);
+		rightFrontWheel=new VirtualWheel(rightFrontMotor,rightFrontEncoder);
 	}
 	/**
 	 * Gets the current instance of the Drivetrain.  If there is none, creates one.
@@ -54,8 +51,8 @@ public class Drivetrain extends Subsystem{
 	 * Drives the robot using the current joystick status. 
 	 */
 	public void driveJoystick(){
-		double y=Robot.oi.controlStick.getY();
-		double x=Robot.oi.controlStick.getCombinedSteer();
+		double y=OI.controlStick.getY();
+		double x=OI.controlStick.getCombinedSteer();
 		double leftVel=y+x;
 		double rightVel=y-x;
 		if (leftVel>1){
@@ -78,15 +75,15 @@ public class Drivetrain extends Subsystem{
 	 * @param rightVelocity	the desired velocity for the right motor
 	 */
 	public void setVelocity(double leftVelocity, double rightVelocity){
-		leftWheel.setSetpoint(leftVelocity);
-		rightWheel.setSetpoint(rightVelocity);
+		leftFrontWheel.setSetpoint(leftVelocity);
+		rightFrontWheel.setSetpoint(rightVelocity);
 	}
 	/**
 	 * Stops the robot's movement, overriding any previous movements.
 	 */
 	public void halt(){
-		rightWheel.halt();
-		leftWheel.halt();
+		rightFrontWheel.halt();
+		leftFrontWheel.halt();
 	}
 	@Override
 	protected void initDefaultCommand() {}	

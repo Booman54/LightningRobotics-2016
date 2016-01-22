@@ -2,6 +2,8 @@ package org.usfirst.frc.team5763.robot;
 
 import org.usfirst.frc.team5763.robot.commands.Dance;
 import org.usfirst.frc.team5763.robot.commands.DriveByJoystick;
+import org.usfirst.frc.team5763.robot.commands.JoystickFeedback;
+import org.usfirst.frc.team5763.robot.commands.RunSDB;
 import org.usfirst.frc.team5763.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -12,6 +14,9 @@ public class Robot extends IterativeRobot{
 	public static OI oi;
 	public Dance autoSequence=new Dance();
 	public DriveByJoystick teleopCommand=new DriveByJoystick();
+	public RunSDB sdbCommand=new RunSDB();
+	public JoystickFeedback forceStick=new JoystickFeedback();
+	
 	public Drivetrain drivetrain;
 	
 	
@@ -22,11 +27,16 @@ public class Robot extends IterativeRobot{
 	}
 	public void autonomousInit(){
 		teleopCommand.cancel();
-		autoSequence.start();		
+		forceStick.cancel();
+		autoSequence.start();
+		sdbCommand.start();
 	}
 	public void teleopInit(){
 		autoSequence.cancel();
 		teleopCommand.start();
+		forceStick.start();
+		sdbCommand.start();
+		
 	}
 	public void autonomousPeriodic(){
 		Scheduler.getInstance().run();

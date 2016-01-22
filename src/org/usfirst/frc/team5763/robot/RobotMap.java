@@ -7,8 +7,8 @@ package org.usfirst.frc.team5763.robot;
  */
 public class RobotMap {
     // Hardware ports
-    public static final int leftMotor = 0; //PWM Port for the left motors
-    public static final int rightMotor = 1; //PWM Port for the right motors
+    public static final int leftFrontMotor = 0; //PWM Port for the left motors
+    public static final int rightFrontMotor = 1; //PWM Port for the right motors
     public static final int leftMotorEncoderA = 0; //DIO Port A for the left motors
     public static final int leftMotorEncoderB = 1; //DIO Port B for the left motors
     public static final int rightMotorEncoderA = 2; //DIO Port A for the right motors

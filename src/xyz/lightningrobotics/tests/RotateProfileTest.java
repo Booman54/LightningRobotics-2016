@@ -8,10 +8,10 @@ import org.usfirst.frc.team5763.robot.subsystems.interfaces.profiles.RotateProfi
 
 public class RotateProfileTest {
 	HighPrecisionTimer timer=new HighPrecisionTimer();
+	@Repeat(times = 10)
 	@Test
-	@Repeat(times = 100)
 	public void test() {
-		double tar=100;//360-Math.random()*1440;
+		double tar=360-Math.random()*1440;
 		System.out.print("Target Angle: "+tar);
 		RotateProfile TPZ=new RotateProfile(tar);
 		System.out.println(" (true target: "+TPZ.trueAngle+" moving "+ TPZ.debugDir + ")");

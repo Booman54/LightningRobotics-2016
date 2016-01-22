@@ -6,22 +6,21 @@ import edu.wpi.first.wpilibj.Joystick;
  * @author Rohit
  *A joystick that actually isn't brain-dead and won't throw you under the bus with weird outputs.
  */
-public class LightningJoystick {
-	private Joystick joystick;
+public class LightningJoystick extends Joystick{
 	public LightningJoystick(int port){
-		joystick=new Joystick(port);
+		super(port);
 	}	
-	public double getY(){
-		return -joystick.getY();
+	public double getRealY(){
+		return -super.getY();
 	}
-	public double getX(){
-		return joystick.getX();
+	public double getRealX(){
+		return super.getX();
 	}
 	public double getTwist(){
-		return joystick.getZ();
+		return this.getZ();
 	}
 	public double getThrottle(){
-		return 1-(joystick.getThrottle()+1)/2;
+		return 1-(this.getThrottle()+1)/2;
 	}
 	public double getCombinedSteer(){
 		double steer=getTwist()+getThrottle();
