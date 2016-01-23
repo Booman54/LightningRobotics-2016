@@ -19,6 +19,7 @@ public class Drivetrain extends Subsystem{
 	private static double maxA=1;
 	
 	private boolean diagnosticMode=false;
+	private boolean adaptive=true;
 	
 	Encoder leftFrontEncoder;
 	Encoder rightFrontEncoder;
@@ -36,6 +37,7 @@ public class Drivetrain extends Subsystem{
 		rightFrontEncoder.setPIDSourceType(PIDSourceType.kRate);
 		leftFrontWheel=new VirtualWheel(leftFrontMotor,leftFrontEncoder);
 		rightFrontWheel=new VirtualWheel(rightFrontMotor,rightFrontEncoder);
+		leftFrontMotor.setInverted(true);
 	}
 	/**
 	 * Gets the current instance of the Drivetrain.  If there is none, creates one.
@@ -51,7 +53,8 @@ public class Drivetrain extends Subsystem{
 	 * Drives the robot using the current joystick status. 
 	 */
 	public void driveJoystick(){
-		double y=OI.controlStick.getY();
+		adaptive=true;
+		double y=OI.controlStick.getRealY();
 		double x=OI.controlStick.getCombinedSteer();
 		double leftVel=y+x;
 		double rightVel=y-x;
@@ -67,7 +70,39 @@ public class Drivetrain extends Subsystem{
 		}
 		leftVel*=maxV;
 		rightVel*=maxV;
+		leftVel*=OI.controlStick.getThrottle();
+		rightVel*=OI.controlStick.getThrottle();
 		setVelocity(leftVel, rightVel);
+	}
+	public void rawDriveJoystick(){
+		adaptive=false;
+		leftFrontWheel.disable();
+		rightFrontWheel.disable();
+		double y=OI.controlStick.getRealY();
+		double x=OI.controlStick.getCombinedSteer();
+		
+		double leftVel=y+x;
+		double rightVel=y-x;
+		if (leftVel>1){
+			leftVel=1;
+		}else if(leftVel<-1){
+			leftVel=-1;
+		}
+		if(rightVel>1){
+			rightVel=1;
+		}else if(rightVel<-1){
+			rightVel=-1;
+		}
+		leftVel*=OI.controlStick.getThrottle();
+		rightVel*=OI.controlStick.getThrottle();
+		setRaw(leftVel, rightVel);
+    }
+	public void setRaw(double leftVel,double rightVel){
+		if(!adaptive){
+			leftFrontMotor.set(leftVel);
+			rightFrontMotor.set(rightVel);
+			
+		}
 	}
 	/**
 	 * Sets the raw velocities of each side.
@@ -102,7 +137,8 @@ public class Drivetrain extends Subsystem{
 		return maxA;
 	}
 	public double getUtilization(){
-		return (Math.abs(leftMotor.get())+Math.abs(rightMotor.get()))/2;
+		System.out.println(leftFrontMotor.get()+" : "+rightFrontMotor.get());
+		return (Math.abs(leftFrontMotor.get())+Math.abs(rightFrontMotor.get()))/2;
 	}
 	public void initTestMode(){
 		if(!diagnosticMode){

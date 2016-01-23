@@ -4,7 +4,7 @@ import org.usfirst.frc.team5763.robot.subsystems.interfaces.ForceFeedbackJoystic
 
 public class OI {
 	public static ForceFeedbackJoystick controlStick;
-	public 	OI(){
+	public OI(){
 		controlStick=new ForceFeedbackJoystick(RobotMap.controlStick);
 	}
 }

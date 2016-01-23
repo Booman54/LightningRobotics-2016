@@ -7,28 +7,37 @@ import edu.wpi.first.wpilibj.Joystick;
  *A joystick that actually isn't brain-dead and won't throw you under the bus with weird outputs.
  */
 public class LightningJoystick extends Joystick{
+	private double deadzone=.15;
+	
 	public LightningJoystick(int port){
 		super(port);
-	}	
+	}
+	private double deadzone(double val){
+		if(val < deadzone && val > -deadzone){
+			return 0;
+		}else{
+			return val/Math.abs(val)*(Math.abs(val)-deadzone)/(1-deadzone);
+		}
+	}
 	public double getRealY(){
-		return -super.getY();
+		return deadzone(super.getY());
 	}
 	public double getRealX(){
-		return super.getX();
+		return deadzone(super.getX());
 	}
 	public double getTwist(){
-		return this.getZ();
+		return deadzone(this.getZ());
 	}
 	public double getThrottle(){
-		return 1-(this.getThrottle()+1)/2;
+		return 1-(super.getThrottle()+1)/2;
 	}
 	public double getCombinedSteer(){
-		double steer=getTwist()+getThrottle();
+		double steer=getTwist()+getRealX();
 		if(steer>1){
 			steer=1;
 		}else if(steer<-1){
 			steer=-1;
 		}
-		return steer;
+		return -deadzone(steer);
 	}
 }

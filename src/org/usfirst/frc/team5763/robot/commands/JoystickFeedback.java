@@ -30,7 +30,7 @@ public class JoystickFeedback extends Command{
 		double y=accel.getY();
 		aX=5*aX/6+x/6;
 		aY=5*aY/6+y/6;
-		joystick.addForce(sourceName,aX,aY);
+		joystick.addForce(sourceName,aX/500,aY/500);
 	}
 
 	@Override

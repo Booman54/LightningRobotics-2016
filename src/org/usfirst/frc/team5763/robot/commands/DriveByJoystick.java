@@ -13,14 +13,15 @@ public class DriveByJoystick extends Command{
 	Drivetrain drivetrain;
 	public DriveByJoystick(){
 		drivetrain=Drivetrain.getInstance();
-	}
-	@Override
-	protected void initialize() {
 		requires(drivetrain);
 	}
 	@Override
+	protected void initialize() {
+		
+	}
+	@Override
 	protected void execute() {
-		drivetrain.driveJoystick();
+		drivetrain.rawDriveJoystick();
 	}
 	@Override
 	protected boolean isFinished() {

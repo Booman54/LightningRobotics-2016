@@ -14,6 +14,10 @@ public class RobotMap {
     public static final int rightMotorEncoderA = 2; //DIO Port A for the right motors
     public static final int rightMotorEncoderB = 3; //DIO Port B for the right motors
     public static final int pneumaticControlModule=0; //CAN Bus ID for the PCM
+    
+    //
+    public static final int[] motorPorts = new int[]{1,2,3,4,12,13,14,15};
+    
     // OI information
     public static final int controlStick = 0; //Joystick number
 

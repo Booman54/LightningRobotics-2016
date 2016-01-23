@@ -9,21 +9,26 @@ import org.usfirst.frc.team5763.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class Robot extends IterativeRobot{
 	public static OI oi;
-	public Dance autoSequence=new Dance();
-	public DriveByJoystick teleopCommand=new DriveByJoystick();
-	public RunSDB sdbCommand=new RunSDB();
-	public JoystickFeedback forceStick=new JoystickFeedback();
+	public Dance autoSequence;
+	public DriveByJoystick teleopCommand;
+	public RunSDB sdbCommand;
+	public JoystickFeedback forceStick;
 	
 	public Drivetrain drivetrain;
 	
-	
-	public void robotInit(){
+	public Robot(){
 		oi=new OI();
-		drivetrain=Drivetrain.getInstance();
-		
+		sdbCommand=new RunSDB();
+		autoSequence=new Dance();
+		teleopCommand=new DriveByJoystick();
+		forceStick=new JoystickFeedback();
+	}
+	public void robotInit(){
+		drivetrain=Drivetrain.getInstance();	
 	}
 	public void autonomousInit(){
 		teleopCommand.cancel();

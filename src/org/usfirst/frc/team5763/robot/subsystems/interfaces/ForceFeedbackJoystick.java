@@ -1,5 +1,6 @@
 package org.usfirst.frc.team5763.robot.subsystems.interfaces;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.usfirst.frc.team5763.robot.LightningJoystick;
@@ -11,6 +12,7 @@ public class ForceFeedbackJoystick extends LightningJoystick{
 	Map<String,double[]> forces;
 	public ForceFeedbackJoystick(int port){
 		super(port);
+		forces=new HashMap<String,double[]>();
 		forceTable=NetworkTable.getTable("FFS");
 		forceTable.putNumber("fX", 0);
 		forceTable.putNumber("fY", 0);	
