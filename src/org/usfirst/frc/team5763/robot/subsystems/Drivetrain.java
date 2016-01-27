@@ -1,8 +1,9 @@
 package org.usfirst.frc.team5763.robot.subsystems;
 
 import org.usfirst.frc.team5763.robot.OI;
-import org.usfirst.frc.team5763.robot.Robot;
 import org.usfirst.frc.team5763.robot.RobotMap;
+
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Talon;
@@ -25,12 +26,20 @@ public class Drivetrain extends Subsystem{
 	Encoder rightFrontEncoder;
 	Talon leftFrontMotor;
 	Talon rightFrontMotor;
+	Talon leftRearMotor;
+	Talon rightRearMotor;
 	VirtualWheel leftFrontWheel;
 	VirtualWheel rightFrontWheel;
 	
+	AnalogGyro gyro;
+	
 	private Drivetrain(){
+		gyro=new AnalogGyro(0);
+		gyro.calibrate();
 		leftFrontMotor=new Talon(RobotMap.leftFrontMotor);
 		rightFrontMotor=new Talon(RobotMap.rightFrontMotor);
+		leftRearMotor=new Talon(RobotMap.leftRearMotor);
+		rightRearMotor=new Talon(RobotMap.rightRearMotor);
 		leftFrontEncoder=new Encoder(RobotMap.leftMotorEncoderA,RobotMap.leftMotorEncoderB);
 		rightFrontEncoder=new Encoder(RobotMap.rightMotorEncoderA,RobotMap.rightMotorEncoderB);
 		leftFrontEncoder.setPIDSourceType(PIDSourceType.kRate);
@@ -38,6 +47,13 @@ public class Drivetrain extends Subsystem{
 		leftFrontWheel=new VirtualWheel(leftFrontMotor,leftFrontEncoder);
 		rightFrontWheel=new VirtualWheel(rightFrontMotor,rightFrontEncoder);
 		leftFrontMotor.setInverted(true);
+		leftRearMotor.setInverted(true);
+	}
+	public double getAngle(){
+		return gyro.getAngle()%360;
+	}
+	public double getAngleRad(){
+		return Math.toRadians(gyro.getAngle()%360);
 	}
 	/**
 	 * Gets the current instance of the Drivetrain.  If there is none, creates one.
@@ -79,10 +95,13 @@ public class Drivetrain extends Subsystem{
 		leftFrontWheel.disable();
 		rightFrontWheel.disable();
 		double y=OI.controlStick.getRealY();
-		double x=OI.controlStick.getCombinedSteer();
+		double x=OI.controlStick.getRealX();
 		
-		double leftVel=y+x;
-		double rightVel=y-x;
+		double xN=x*Math.cos(getAngleRad())-y*Math.sin(getAngleRad());
+		double yN=x*Math.sin(getAngleRad())+y*Math.cos(getAngleRad());		
+		
+		double leftVel=yN+xN;
+		double rightVel=yN-xN;
 		if (leftVel>1){
 			leftVel=1;
 		}else if(leftVel<-1){
@@ -100,7 +119,9 @@ public class Drivetrain extends Subsystem{
 	public void setRaw(double leftVel,double rightVel){
 		if(!adaptive){
 			leftFrontMotor.set(leftVel);
+			leftRearMotor.set(leftVel);
 			rightFrontMotor.set(rightVel);
+			rightRearMotor.set(rightVel);
 			
 		}
 	}

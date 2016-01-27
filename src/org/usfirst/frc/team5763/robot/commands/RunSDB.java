@@ -22,6 +22,7 @@ public class RunSDB extends Command{
 		index++;
 		SmartDashboard.putNumber("Drivetrain Utilization", drivetrain.getUtilization());
 		SmartDashboard.putNumber("Control Stick Throttle", OI.controlStick.getThrottle());
+		SmartDashboard.putNumber("Gyroscope Angle", drivetrain.getAngle());
 		if(index%50==0){
 			SmartDashboard.putNumber("Power System Temperature", pdp.getTemperature()*1.8+32);
 			double mCurrent=0;
