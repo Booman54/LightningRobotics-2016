@@ -1,17 +1,17 @@
 package org.usfirst.frc.team5763.robot.subsystems;
 
 import org.usfirst.frc.team5763.robot.OI;
+import org.usfirst.frc.team5763.robot.Robot;
 import org.usfirst.frc.team5763.robot.RobotMap;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
+ * The drivetrain class.  This directly handles low-level robot movement, including drive-by-velocity and joystick math.
  * @author Rohit
- *The drivetrain class.  This directly handles low-level robot movement, including drive-by-velocity and joystick math.
  */
 public class Drivetrain extends Subsystem{
 	static Drivetrain instance;
@@ -31,30 +31,23 @@ public class Drivetrain extends Subsystem{
 	VirtualWheel leftFrontWheel;
 	VirtualWheel rightFrontWheel;
 	
-	AnalogGyro gyro;
 	
 	private Drivetrain(){
-		gyro=new AnalogGyro(0);
-		gyro.calibrate();
+		setDefaultCommand(Robot.instance.teleopCommand);
 		leftFrontMotor=new Talon(RobotMap.leftFrontMotor);
 		rightFrontMotor=new Talon(RobotMap.rightFrontMotor);
 		leftRearMotor=new Talon(RobotMap.leftRearMotor);
 		rightRearMotor=new Talon(RobotMap.rightRearMotor);
-		leftFrontEncoder=new Encoder(RobotMap.leftMotorEncoderA,RobotMap.leftMotorEncoderB);
-		rightFrontEncoder=new Encoder(RobotMap.rightMotorEncoderA,RobotMap.rightMotorEncoderB);
+		leftFrontEncoder=new Encoder(RobotMap.leftFrontMotorEncoderA,RobotMap.leftFrontMotorEncoderB);
+		rightFrontEncoder=new Encoder(RobotMap.rightFrontMotorEncoderA,RobotMap.rightFrontMotorEncoderB);
 		leftFrontEncoder.setPIDSourceType(PIDSourceType.kRate);
 		rightFrontEncoder.setPIDSourceType(PIDSourceType.kRate);
 		leftFrontWheel=new VirtualWheel(leftFrontMotor,leftFrontEncoder);
 		rightFrontWheel=new VirtualWheel(rightFrontMotor,rightFrontEncoder);
-		leftFrontMotor.setInverted(true);
-		leftRearMotor.setInverted(true);
+		//leftFrontMotor.setInverted(true);
+		//leftRearMotor.setInverted(true);
 	}
-	public double getAngle(){
-		return gyro.getAngle()%360;
-	}
-	public double getAngleRad(){
-		return Math.toRadians(gyro.getAngle()%360);
-	}
+
 	/**
 	 * Gets the current instance of the Drivetrain.  If there is none, creates one.
 	 * @return the current drivetrain object
@@ -69,9 +62,8 @@ public class Drivetrain extends Subsystem{
 	 * Drives the robot using the current joystick status. 
 	 */
 	public void driveJoystick(){
-		adaptive=true;
-		double y=OI.controlStick.getRealY();
-		double x=OI.controlStick.getCombinedSteer();
+		double y=OI.controlStick.getRotatedVector()[0];
+		double x=OI.controlStick.getRotatedVector()[1];
 		double leftVel=y+x;
 		double rightVel=y-x;
 		if (leftVel>1){
@@ -84,46 +76,29 @@ public class Drivetrain extends Subsystem{
 		}else if(rightVel<-1){
 			rightVel=-1;
 		}
-		leftVel*=maxV;
-		rightVel*=maxV;
+		
 		leftVel*=OI.controlStick.getThrottle();
 		rightVel*=OI.controlStick.getThrottle();
-		setVelocity(leftVel, rightVel);
+		if(adaptive){
+			leftVel*=maxV;
+			rightVel*=maxV;
+			setVelocity(leftVel, rightVel);
+		}else{
+			setRaw(leftVel,rightVel);
+		}
 	}
-	public void rawDriveJoystick(){
-		adaptive=false;
+
+	public void disableAdaptive(){
 		leftFrontWheel.disable();
 		rightFrontWheel.disable();
-		double y=OI.controlStick.getRealY();
-		double x=OI.controlStick.getRealX();
-		
-		double xN=x*Math.cos(getAngleRad())-y*Math.sin(getAngleRad());
-		double yN=x*Math.sin(getAngleRad())+y*Math.cos(getAngleRad());		
-		
-		double leftVel=yN+xN;
-		double rightVel=yN-xN;
-		if (leftVel>1){
-			leftVel=1;
-		}else if(leftVel<-1){
-			leftVel=-1;
-		}
-		if(rightVel>1){
-			rightVel=1;
-		}else if(rightVel<-1){
-			rightVel=-1;
-		}
-		leftVel*=OI.controlStick.getThrottle();
-		rightVel*=OI.controlStick.getThrottle();
-		setRaw(leftVel, rightVel);
-    }
+		adaptive=false;
+	}
+	
 	public void setRaw(double leftVel,double rightVel){
-		if(!adaptive){
 			leftFrontMotor.set(leftVel);
 			leftRearMotor.set(leftVel);
 			rightFrontMotor.set(rightVel);
 			rightRearMotor.set(rightVel);
-			
-		}
 	}
 	/**
 	 * Sets the raw velocities of each side.
@@ -158,7 +133,6 @@ public class Drivetrain extends Subsystem{
 		return maxA;
 	}
 	public double getUtilization(){
-		System.out.println(leftFrontMotor.get()+" : "+rightFrontMotor.get());
 		return (Math.abs(leftFrontMotor.get())+Math.abs(rightFrontMotor.get()))/2;
 	}
 	public void initTestMode(){

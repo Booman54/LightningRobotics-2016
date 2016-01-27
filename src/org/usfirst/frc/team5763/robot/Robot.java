@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 public class Robot extends IterativeRobot{
+	
+	public static Robot instance;
+	
 	public static OI oi;
 	public Dance autoSequence;
 	public DriveByJoystick teleopCommand;
@@ -20,11 +23,13 @@ public class Robot extends IterativeRobot{
 	public Drivetrain drivetrain;
 	
 	public Robot(){
+		instance=this;
 		oi=new OI();
 		sdbCommand=new RunSDB();
 		autoSequence=new Dance();
 		teleopCommand=new DriveByJoystick();
 		forceStick=new JoystickFeedback();
+		
 	}
 	public void robotInit(){
 		drivetrain=Drivetrain.getInstance();	
