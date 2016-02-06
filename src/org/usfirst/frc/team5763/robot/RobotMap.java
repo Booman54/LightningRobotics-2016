@@ -25,7 +25,7 @@ public class RobotMap {
     
     
     // Hardware data input ports
-    public static final int[] motorPorts = new int[]{1,2,3,4,12,13,14,15};
+    public static final int[] motorPorts = new int[]{0,1,2,3,4,12,13,14,15};
     public static final int gyroPort = 0;
     public static final int loadSwitch = 8;
     
